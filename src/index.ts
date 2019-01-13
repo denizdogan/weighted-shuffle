@@ -1,14 +1,12 @@
 export type Direction = 'asc' | 'desc'
 
-export type Pair = [string, number]
-
 export interface ObjectInput {
   [key: string]: number
 }
 
 export type Modifier = (x: number) => number
 
-export type ArrayInput = Pair[]
+export type ArrayInput = [string, number][]
 
 export type Input = ObjectInput | ArrayInput
 
@@ -18,37 +16,39 @@ export type Output = string[]
  * Shuffle an array or object according to weights.
  * @param input Input value (object or array)
  * @param direction Direction of the output
- * @returns Array of properties
+ * @returns Array of values
  */
-function shuffle(input: Input, direction: Direction = 'asc'): Output {
-  // normalize Input to Pair[]
-  let pairs: Pair[]
+export default function(input: Input, direction: Direction = 'asc'): Output {
+  // normalize Input to [string, number][]
+  let pairs: [string, number][]
   if (Array.isArray(input)) {
     pairs = input.slice(0)
   } else {
-    pairs = Object.entries(input)
+    pairs = []
+    for (const prop in input) {
+      if (input.hasOwnProperty(prop)) {
+        const value = input[prop]
+        pairs.push([prop, value])
+      }
+    }
   }
 
-  // calculate the "power" of each entry.  the power is the weight with some
-  // randomization added into the mix.  we could do this in the next part
-  // where we sort according to power, but then we would need to calculate the
-  // power twice or more for each entry.
   const modifier: Modifier = direction === 'desc' ? x => -x : x => x
-  const powers: [number, number][] = []
-  for (const [idx, [, weight]] of pairs.entries()) {
-    const power = modifier(Math.pow(Math.random(), 1 / weight))
-    powers.push([power, idx])
-  }
+  pairs = pairs.map(
+    (pair): [string, number] => [
+      pair[0],
+      modifier(Math.pow(Math.random(), 1 / pair[1]))
+    ]
+  )
 
   // sort the pairs by their power.
-  powers.sort(([power1], [power2]) => {
-    if (power1 > power2) return 1
-    if (power1 < power2) return -1
+  pairs.sort((a, b) => {
+    const aw = a[1]
+    const bw = b[1]
+    if (aw > bw) return 1
+    if (aw < bw) return -1
     return 0
   })
 
-  return powers.map(([, idx]) => pairs[idx][0])
+  return pairs.map(pair => pair[0])
 }
-
-export { shuffle }
-export default shuffle
