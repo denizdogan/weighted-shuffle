@@ -5,6 +5,7 @@ Perform a weighted shuffle on a collection. Based on the algorithms described in
 - Zero dependencies
 - Tiny footprint (271 B gzipped)
 - TypeScript declarations
+![](https://img.shields.io/bundlephobia/minzip/weighted-shuffle.svg?style=for-the-badge) ![](https://img.shields.io/david/denizdogan/weighted-shuffle.svg?style=for-the-badge)
 
 ## Installation
 
