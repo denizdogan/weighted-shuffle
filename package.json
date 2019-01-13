@@ -15,6 +15,7 @@
     "build": "concurrently -n build:types,build:js \"npm run build:types\" \"npm run build:js\"",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "rollup -c rollup.config.js",
+    "watch": "rollup -c rollup.config.js -w",
     "clean": "rimraf lib",
     "test": "jest"
   },
