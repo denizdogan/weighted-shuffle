@@ -20,10 +20,7 @@ export type Output = string[]
  * @param direction Direction of the output
  * @returns Array of properties
  */
-export default function shuffle(
-  input: Input,
-  direction: Direction = 'asc'
-): Output {
+function shuffle(input: Input, direction: Direction = 'asc'): Output {
   // normalize Input to Pair[]
   let pairs: Pair[]
   if (Array.isArray(input)) {
@@ -36,7 +33,6 @@ export default function shuffle(
   // randomization added into the mix.  we could do this in the next part
   // where we sort according to power, but then we would need to calculate the
   // power twice or more for each entry.
-  const modifier: Modifier = direction === 'asc' ? x => x : x => -x
   const modifier: Modifier = direction === 'desc' ? x => -x : x => x
   const powers: [number, number][] = []
   for (const [idx, [, weight]] of pairs.entries()) {
@@ -53,3 +49,6 @@ export default function shuffle(
 
   return powers.map(([, idx]) => pairs[idx][0])
 }
+
+export { shuffle }
+export default shuffle
