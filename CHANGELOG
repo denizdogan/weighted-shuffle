@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.2 - January 13, 2019
+
+- Compile for ES5
+- Remove minification
+- Fix packaging issues
+
 ## 0.0.1 - January 12, 2019
 
 - Initial release.
