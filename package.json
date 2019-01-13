@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/denizdogan/weighted-shuffle.git"
   },
+  "files": [
+    "/lib"
+  ],
   "scripts": {
     "build": "concurrently -n build:types,build:js \"npm run build:types\" \"npm run build:js\"",
     "build:types": "tsc --emitDeclarationOnly",
