@@ -1,6 +1,5 @@
 import typescript from 'rollup-plugin-typescript'
 import filesize from 'rollup-plugin-filesize'
-import { terser } from 'rollup-plugin-terser'
 
 export default {
   input: './src/index.ts',
@@ -9,5 +8,5 @@ export default {
     format: 'cjs',
     exports: 'named'
   },
-  plugins: [typescript(), terser(), filesize()]
+  plugins: [typescript(), filesize()]
 }
