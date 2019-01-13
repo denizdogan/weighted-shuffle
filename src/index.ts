@@ -37,6 +37,7 @@ export default function shuffle(
   // where we sort according to power, but then we would need to calculate the
   // power twice or more for each entry.
   const modifier: Modifier = direction === 'asc' ? x => x : x => -x
+  const modifier: Modifier = direction === 'desc' ? x => -x : x => x
   const powers: [number, number][] = []
   for (const [idx, [, weight]] of pairs.entries()) {
     const power = modifier(Math.pow(Math.random(), 1 / weight))
