@@ -12,7 +12,7 @@ $ npm i weighted-shuffle
 
 ## Usage
 
-The package exports just one function, `shuffle`. It takes either an object where each enumerable property is a value and its corresponding key is the weight, _or_ an array of arrays where the first inner element is the value and the second element is the weight.
+The package exports just one function. It takes either an object where each enumerable property is a value and its corresponding key is the weight, _or_ an array of arrays where the first element is the value and the second element is the weight.
 
 ### Examples
 
