@@ -1,0 +1,35 @@
+{
+  "name": "weighted-shuffle",
+  "description": "Shuffle a collection of weighted values",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "bugs": "https://github.com/denizdogan/weighted-shuffle/issues",
+  "homepage": "https://github.com/denizdogan/weighted-shuffle",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/denizdogan/weighted-shuffle.git"
+  },
+  "scripts": {
+    "build": "concurrently -n build:types,build:js \"npm run build:types\" \"npm run build:js\"",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "rollup -c rollup.config.js",
+    "clean": "rimraf lib",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.12",
+    "concurrently": "^4.1.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.1.0",
+    "rollup-plugin-filesize": "^6.0.0",
+    "rollup-plugin-terser": "^4.0.2",
+    "rollup-plugin-typescript": "^1.0.0",
+    "ts-jest": "^23.10.5",
+    "tslib": "^1.9.3",
+    "typescript": "^3.2.2"
+  }
+}
