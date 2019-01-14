@@ -29,7 +29,7 @@ function fromObject(input: ObjectInput, weightFunc: WeightFunction): Pair[] {
   return pairs
 }
 
-export default function(input: Input, direction: Direction = 'asc'): Output {
+function shuffle(input: Input, direction: Direction = 'asc'): Output {
   const weightFunc =
     direction === 'desc'
       ? (weight: number) => -Math.pow(Math.random(), 1 / weight)
@@ -46,3 +46,6 @@ export default function(input: Input, direction: Direction = 'asc'): Output {
   })
   return pairs
 }
+
+export default shuffle
+export { shuffle }
