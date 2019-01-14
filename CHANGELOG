@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 - January 13, 2019
+
+- Revamped implementation
+- Increase performance by more than 2x
+
 ## 0.0.2 - January 13, 2019
 
 - Compile for ES5

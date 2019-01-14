@@ -1,47 +1,42 @@
+export type Value = any
+export type Weight = number
 export type Direction = 'asc' | 'desc'
-
 export interface ObjectInput {
-  [key: string]: number
+  [value: string]: Weight
+}
+export type Modifier = (x: Weight) => Weight
+export type Pair = [Value, Weight]
+export type ArrayInput = Pair[]
+export type Input = ObjectInput | ArrayInput
+export type Output = Value[]
+export type WeightFunction = (weight: number) => number
+
+function fromArray(input: ArrayInput, weightFunc: WeightFunction): Pair[] {
+  // apply weightFunc to the second element of every pair. we could use
+  // destructuring, but it's not widely supported and the transpiled code
+  // would be slow.
+  return input.map((pair: Pair): Pair => [pair[0], weightFunc(pair[1])])
 }
 
-export type Modifier = (x: number) => number
-
-export type ArrayInput = [string, number][]
-
-export type Input = ObjectInput | ArrayInput
-
-export type Output = string[]
-
-/**
- * Shuffle an array or object according to weights.
- * @param input Input value (object or array)
- * @param direction Direction of the output
- * @returns Array of values
- */
-export default function(input: Input, direction: Direction = 'asc'): Output {
-  // normalize Input to [string, number][]
-  let pairs: [string, number][]
-  if (Array.isArray(input)) {
-    pairs = input.slice(0)
-  } else {
-    pairs = []
-    for (const prop in input) {
-      if (input.hasOwnProperty(prop)) {
-        const value = input[prop]
-        pairs.push([prop, value])
-      }
+function fromObject(input: ObjectInput, weightFunc: WeightFunction): Pair[] {
+  const pairs: Pair[] = []
+  // we could use Object.entries().map but it's slow
+  for (const value in input) {
+    if (input.hasOwnProperty(value)) {
+      pairs.push([value, weightFunc(input[value])])
     }
   }
+  return pairs
+}
 
-  const modifier: Modifier = direction === 'desc' ? x => -x : x => x
-  pairs = pairs.map(
-    (pair): [string, number] => [
-      pair[0],
-      modifier(Math.pow(Math.random(), 1 / pair[1]))
-    ]
-  )
-
-  // sort the pairs by their power.
+export default function(input: Input, direction: Direction = 'asc'): Output {
+  const weightFunc =
+    direction === 'desc'
+      ? (weight: number) => -Math.pow(Math.random(), 1 / weight)
+      : (weight: number) => Math.pow(Math.random(), 1 / weight)
+  const pairs: Pair[] = Array.isArray(input)
+    ? fromArray(input, weightFunc)
+    : fromObject(input, weightFunc)
   pairs.sort((a, b) => {
     const aw = a[1]
     const bw = b[1]
@@ -49,6 +44,5 @@ export default function(input: Input, direction: Direction = 'asc'): Output {
     if (aw < bw) return -1
     return 0
   })
-
-  return pairs.map(pair => pair[0])
+  return pairs
 }

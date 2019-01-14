@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "downlevelIteration": true,
+    "module": "commonjs",
     "lib": ["esnext"],
-    "module": "esnext",
     "declaration": true,
     "outDir": "lib",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
-  },
-  "exclude": ["lib", "**/*.test.ts"]
+  }
 }
