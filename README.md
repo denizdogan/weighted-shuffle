@@ -2,7 +2,7 @@
 
 Perform a non-destructive weighted shuffle on a collection. Based on the algorithms described in [Weighted Random Sampling (2005; Efraimidis, Spirakis)](http://utopia.duth.gr/~pefraimi/research/data/2007EncOfAlg.pdf).
 
-![](https://img.shields.io/bundlephobia/minzip/weighted-shuffle.svg?style=for-the-badge) ![](https://img.shields.io/david/denizdogan/weighted-shuffle.svg?style=for-the-badge)
+![](https://img.shields.io/bundlephobia/minzip/weighted-shuffle.svg?style=for-the-badge) ![](https://img.shields.io/david/denizdogan/weighted-shuffle.svg?style=for-the-badge) ![](https://img.shields.io/travis/com/denizdogan/weighted-shuffle.svg?style=for-the-badge)
 
 ## Installation
 
