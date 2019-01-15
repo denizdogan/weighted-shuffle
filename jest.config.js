@@ -5,5 +5,12 @@ module.exports = {
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  verbose: true
+  verbose: true,
+  collectCoverage: true,
+  restoreMocks: true,
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.test.json'
+    }
+  }
 }
