@@ -5,9 +5,9 @@ export function weightFunc(weight: number): number {
   return Math.pow(Math.random(), 1 / weight)
 }
 
-export function fromArray(input: ArrayInput): Tuple[] {
+export function fromArray<T = any>(input: ArrayInput<T>): Tuple<T>[] {
   // apply weightFunc to the second element of every tuple.
-  return input.map((tuple: Tuple): Tuple => [tuple[0], weightFunc(tuple[1])])
+  return input.map(tuple => [tuple[0], weightFunc(tuple[1])])
 }
 
 export function fromObject(input: ObjectInput): Tuple[] {

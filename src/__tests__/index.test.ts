@@ -1,6 +1,6 @@
 import { alea } from 'seedrandom'
 
-import { shuffle, ObjectInput, ArrayInput, Direction } from '../index'
+import { shuffle, ObjectInput, ArrayInput, Direction, Tuple } from '../index'
 import * as util from '../util'
 
 import arrayInput from './fixtures/array-input.json'
@@ -43,5 +43,11 @@ describe('shuffling', () => {
     const output = shuffle(<ArrayInput>arrayInput, Direction.desc)
     expect(fromArray.mock.calls).toEqual([[arrayInput]])
     expect(output).toEqual(outputDesc)
+  })
+
+  test('strongly typed', () => {
+    // @ts-expect-error
+    const output: Tuple<string>[] = shuffle([[{ name: 'Maurine' }, 713]])
+    expect(output).toHaveLength(1)
   })
 })
