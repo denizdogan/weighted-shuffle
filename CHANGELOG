@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 - April 22, 2021
+
+- Support for strong typing (PR #1)
+- Update lockfile version 1 to 2
+- Update a bunch of vulnerable dependencies
+
 ## 0.2.0 - January 15, 2019
 
 - Refactor code base
