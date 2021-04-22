@@ -1,6 +1,6 @@
 import { fromArray, fromObject } from './util'
 
-export type Tuple = [any, number]
+export type Tuple<T = any> = [T, number]
 export enum Direction {
   asc = 'asc',
   desc = 'desc'
@@ -8,13 +8,13 @@ export enum Direction {
 export interface ObjectInput {
   [value: string]: number
 }
-export type ArrayInput = Tuple[]
+export type ArrayInput<T = any> = Tuple<T>[]
 
-export default function shuffle(
-  input: ObjectInput | ArrayInput,
+export default function shuffle<T = any>(
+  input: ObjectInput | ArrayInput<T>,
   direction: Direction = Direction.asc
-): Tuple[] {
-  const tuples: Tuple[] = Array.isArray(input)
+): Tuple<T>[] {
+  const tuples: Tuple<T>[] = Array.isArray(input)
     ? fromArray(input)
     : fromObject(input)
   tuples.sort(
