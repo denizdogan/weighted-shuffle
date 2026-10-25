@@ -1,50 +1,62 @@
-# `weighted-shuffle`
+# weighted-shuffle
 
-Perform a non-destructive weighted shuffle on a collection. Based on the algorithms described in [Weighted Random Sampling (2005; Efraimidis, Spirakis)](http://utopia.duth.gr/~pefraimi/research/data/2007EncOfAlg.pdf).
+[![Coverage](https://codecov.io/gh/denizdogan/weighted-shuffle/graph/badge.svg)](https://app.codecov.io/gh/denizdogan/weighted-shuffle)
 
-![](https://img.shields.io/github/issues/denizdogan/weighted-shuffle) ![](https://img.shields.io/github/forks/denizdogan/weighted-shuffle) ![](https://img.shields.io/github/stars/denizdogan/weighted-shuffle) ![](https://img.shields.io/github/license/denizdogan/weighted-shuffle)
+Shuffle weighted values without modifying the input. Node.js 22+, TypeScript types included, no runtime dependencies.
 
-## Installation
+## Install
 
 ```sh
-$ npm i weighted-shuffle
+npm install weighted-shuffle
 ```
-
-TypeScript declarations are included.
 
 ## Usage
 
-The package exports one function, `shuffle`, which takes two arguments. The first argument is the input collection, which is an object on the form `{value: weight, ...}`, _or_ an array of tuples on the form `[[value, weight], ...]`. The second argument is optional and either `'asc'` or `'desc'`. See below for examples.
+```ts
+import { shuffle } from "weighted-shuffle";
 
-The weight must always be a number. If it's not a number, the behavior of this library is undefined.
-
-Since object property keys must be strings in JavaScipt, the same applies to this package.
-
-In the array-tuple form, the value can be anything. The output is always an array of tuples on the form `[value, weight]` where `weight` is a value between 0 and 1 based on the input weight.
-
-## Examples
-
-```sh
-$ node
-> const { shuffle } = require('weighted-shuffle')
-undefined
-> shuffle({ a: 1, b: 2, c: 3, d: 4 })
-[ [ 'a', 0.3332369734469953 ],
-  [ 'd', 0.4435102443860357 ],
-  [ 'b', 0.634610481335515 ],
-  [ 'c', 0.6893187374490146 ] ]
-> shuffle([['a', 1], ['b', 2], ['c', 3], ['d', 4]])
-[ [ 'a', 0.17752200849829158 ],
-  [ 'd', 0.4915930588445954 ],
-  [ 'b', 0.5257541251818763 ],
-  [ 'c', 0.8857869178489653 ] ]
-> shuffle({ a: 1, b: 2, c: 3, d: 4 }, 'desc')
-[ [ 'b', 0.8705423064592988 ],
-  [ 'c', 0.729363245199407 ],
-  [ 'd', 0.6693826180657991 ],
-  [ 'a', 0.25133205081259735 ] ]
+const weights = { apple: 1, banana: 2, cherry: 3 };
+console.log(shuffle(weights));
+// Example output (varies each run):
+// ["banana", "apple", "cherry"]
 ```
 
-## Contributing
+Use positive, finite weights. The optional second argument accepts:
 
-- Make a PR!
+- `direction`: `"asc"` (default) sorts scores low to high; higher-weight items tend to appear later. `"desc"` reverses that order.
+- `includeScores`: `false` (default) returns values only; `true` returns `[value, score]` tuples.
+
+```ts
+console.log(shuffle(weights, { includeScores: true }));
+// Example output (varies each run):
+// [
+//   ["banana", 0.6655671011483644],
+//   ["apple", 0.9086854240720301],
+//   ["cherry", 0.9249868712792301]
+// ]
+```
+
+Scores are internal random ranking keys—not the original weights or probabilities.
+
+For values other than strings, pass `[value, weight]` entries. Arrays, maps, sets of entries, and other finite iterables are supported:
+
+```ts
+const weighted: [{ id: number }, number][] = [
+	[{ id: 1 }, 2],
+	[{ id: 2 }, 1],
+];
+
+shuffle(weighted);
+shuffle(new Map(weighted));
+shuffle(new Set(weighted));
+```
+
+Map keys retain their original types and identity. Generators and iterators are consumed; collections are not modified.
+
+CommonJS is also supported:
+
+```ts
+const { shuffle } = require("weighted-shuffle");
+```
+
+Based on [Efraimidis–Spirakis weighted random sampling](http://utopia.duth.gr/~pefraimi/research/data/2007EncOfAlg.pdf).

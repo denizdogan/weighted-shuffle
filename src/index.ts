@@ -1,28 +1,42 @@
-import { fromArray, fromObject } from './util'
+type ObjectInput = Record<string, number>;
 
-export type Tuple<T = any> = [T, number]
-export enum Direction {
-  asc = 'asc',
-  desc = 'desc'
-}
-export interface ObjectInput {
-  [value: string]: number
-}
-export type ArrayInput<T = any> = Tuple<T>[]
+type IterableInput<T = unknown> = Iterable<readonly [T, number]>;
+type InputValue<T> = T extends IterableInput<infer Value> ? Value : string;
 
-export default function shuffle<T = any>(
-  input: ObjectInput | ArrayInput<T>,
-  direction: Direction = Direction.asc
-): Tuple<T>[] {
-  const tuples: Tuple<T>[] = Array.isArray(input)
-    ? fromArray(input)
-    : fromObject(input)
-  tuples.sort(
-    direction === Direction.desc
-      ? (a: Tuple, b: Tuple) => b[1] - a[1]
-      : (a: Tuple, b: Tuple) => a[1] - b[1]
-  )
-  return tuples
+type Options = {
+	direction?: "asc" | "desc";
+	includeScores?: boolean;
+};
+
+export default function shuffle<T extends ObjectInput | IterableInput>(
+	input: T,
+	options: Options & { includeScores: true },
+): [InputValue<T>, number][];
+export default function shuffle<T extends ObjectInput | IterableInput>(
+	input: T,
+	options?: Options & { includeScores?: false },
+): InputValue<T>[];
+export default function shuffle<T extends ObjectInput | IterableInput>(
+	input: T,
+	options: Options,
+): InputValue<T>[] | [InputValue<T>, number][];
+export default function shuffle(
+	input: ObjectInput | IterableInput,
+	options: Options = {},
+): unknown[] {
+	const direction = options.direction ?? "asc";
+	const entries: IterableInput =
+		Symbol.iterator in input && typeof input[Symbol.iterator] === "function"
+			? input
+			: Object.entries(input);
+	const tuples = Array.from(entries, ([value, weight]): [unknown, number] => [
+		value,
+		Math.random() ** (1 / weight),
+	]);
+	tuples.sort(
+		direction === "desc" ? (a, b) => b[1] - a[1] : (a, b) => a[1] - b[1],
+	);
+	return options.includeScores ? tuples : tuples.map(([value]) => value);
 }
 
-export { shuffle }
+export { shuffle };
