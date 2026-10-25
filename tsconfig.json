@@ -1,13 +1,16 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["esnext", "dom"],
-    "resolveJsonModule": true,
-    "declaration": true,
-    "outDir": "lib",
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  }
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"lib": ["ES2022"],
+		"types": ["node"],
+		"strict": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"allowImportingTsExtensions": true,
+		"noEmit": true
+	},
+	"include": ["src/**/*.ts", "tests/**/*.ts", "*.config.mts"]
 }
