@@ -1,8 +1,3 @@
-export const Direction = {
-	asc: "asc",
-	desc: "desc",
-} as const;
-
 type ObjectInput = Record<string, number>;
 
 type IterableInput<T = unknown> = Iterable<readonly [T, number]>;
@@ -29,7 +24,7 @@ export default function shuffle(
 	input: ObjectInput | IterableInput,
 	options: Options = {},
 ): unknown[] {
-	const direction = options.direction ?? Direction.asc;
+	const direction = options.direction ?? "asc";
 	const entries: IterableInput =
 		Symbol.iterator in input && typeof input[Symbol.iterator] === "function"
 			? input
@@ -39,9 +34,7 @@ export default function shuffle(
 		Math.random() ** (1 / weight),
 	]);
 	tuples.sort(
-		direction === Direction.desc
-			? (a, b) => b[1] - a[1]
-			: (a, b) => a[1] - b[1],
+		direction === "desc" ? (a, b) => b[1] - a[1] : (a, b) => a[1] - b[1],
 	);
 	return options.includeScores ? tuples : tuples.map(([value]) => value);
 }

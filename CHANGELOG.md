@@ -1,10 +1,10 @@
 # Changelog
 
-## Unreleased
+## 2.0.0 - October 25, 2026
 
 - Publish native ESM and CommonJS builds with conditional type declarations using Vite library mode and a declaration plugin.
 - Build automatically before packing or publishing; mark the package as side-effect free.
-- Accept readonly tuple inputs and literal sort directions; replace the Direction enum with an as const object.
+- Accept readonly tuple inputs and literal sort directions.
 - Infer string keys for object inputs and preserve iterable value types.
 - Accept maps, sets of weighted entries, and other finite synchronous iterables while preserving value types and key identity.
 - Upgrade to TypeScript 7 and replace Jest/ts-jest with Vitest and V8 coverage.
@@ -16,9 +16,9 @@
 - Breaking: replace the positional direction argument with a configuration object accepting direction and includeScores.
 - Breaking: require Node.js 22 or newer and target ES2022; internal deep imports are no longer exported.
 - Breaking: callers relying on unchecked any defaults or incorrect object-input generic results must narrow or correct their types.
-- Breaking: enum-member type references such as Direction.asc must use typeof Direction.asc instead.
+- Breaking: remove Direction; use the string literals "asc" and "desc" instead.
 - Breaking: remove the exported Tuple alias; use [T, number] directly.
-- Breaking: input types are private; only shuffle and the Direction constant are exported.
+- Breaking: input types are private; only shuffle is exported (default and named).
 - Breaking: shuffle's optional explicit type argument now describes the entire input, not the array value; normally it can be inferred.
 
 ## 1.0.0 - April 22, 2021

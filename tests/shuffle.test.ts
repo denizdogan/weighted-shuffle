@@ -8,7 +8,7 @@ import {
 	vi,
 } from "vitest";
 
-import { Direction, shuffle } from "../src/index.ts";
+import { shuffle } from "../src/index.ts";
 
 const arrayInput = [
 	["a", 1],
@@ -56,7 +56,7 @@ describe("shuffling", () => {
 
 	test("object, descending", () => {
 		const output: string[] = shuffle(objectInput, {
-			direction: Direction.desc,
+			direction: "desc",
 		});
 		expect(output).toEqual(outputDesc);
 	});
@@ -67,16 +67,14 @@ describe("shuffling", () => {
 	});
 
 	test("array, descending", () => {
-		const output = shuffle(arrayInput, { direction: Direction.desc });
+		const output = shuffle(arrayInput, { direction: "desc" });
 		expect(output).toEqual(outputDesc);
 	});
 
-	test.each([Direction.asc, Direction.desc])("map, %s", (direction) => {
+	test.each(["asc", "desc"] as const)("map, %s", (direction) => {
 		const input = new Map(arrayInput);
 		const output: ("a" | "b" | "c" | "d")[] = shuffle(input, { direction });
-		expect(output).toEqual(
-			direction === Direction.asc ? outputAsc : outputDesc,
-		);
+		expect(output).toEqual(direction === "asc" ? outputAsc : outputDesc);
 		expect([...input]).toEqual(arrayInput);
 	});
 
@@ -97,12 +95,10 @@ describe("shuffling", () => {
 		]);
 	});
 
-	test.each([Direction.asc, Direction.desc])("set, %s", (direction) => {
+	test.each(["asc", "desc"] as const)("set, %s", (direction) => {
 		const input: ReadonlySet<(typeof arrayInput)[number]> = new Set(arrayInput);
 		const output: ("a" | "b" | "c" | "d")[] = shuffle(input, { direction });
-		expect(output).toEqual(
-			direction === Direction.asc ? outputAsc : outputDesc,
-		);
+		expect(output).toEqual(direction === "asc" ? outputAsc : outputDesc);
 		expect([...input]).toEqual(arrayInput);
 	});
 
@@ -116,22 +112,17 @@ describe("shuffling", () => {
 		expect(input.next().done).toBe(true);
 	});
 
-	test.each([Direction.asc, Direction.desc])(
-		"include scores, %s",
-		(direction) => {
-			const output: [string, number][] = shuffle(objectInput, {
-				direction,
-				includeScores: true,
-			});
-			expect(output).toEqual(
-				direction === Direction.asc ? scoresAsc : scoresDesc,
-			);
-		},
-	);
+	test.each(["asc", "desc"] as const)("include scores, %s", (direction) => {
+		const output: [string, number][] = shuffle(objectInput, {
+			direction,
+			includeScores: true,
+		});
+		expect(output).toEqual(direction === "asc" ? scoresAsc : scoresDesc);
+	});
 
 	test("scored output preserves literal values and accepts readonly options", () => {
 		const options = Object.freeze({
-			direction: Direction.desc,
+			direction: "desc",
 			includeScores: true,
 		} as const);
 		const output: ["a" | "b" | "c" | "d", number][] = shuffle(
@@ -139,14 +130,10 @@ describe("shuffling", () => {
 			options,
 		);
 		expect(output).toEqual(scoresDesc);
-		expect(options).toEqual({ direction: Direction.desc, includeScores: true });
+		expect(options).toEqual({ direction: "desc", includeScores: true });
 	});
 
-	test.each([
-		{},
-		{ includeScores: false },
-		{ direction: Direction.asc },
-	] as const)(
+	test.each([{}, { includeScores: false }, { direction: "asc" }] as const)(
 		"default options %j return values in ascending order",
 		(options) => {
 			const output: string[] = shuffle(objectInput, options);
